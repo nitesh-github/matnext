@@ -1,11 +1,16 @@
-import { List, ListItem, ListItemText, Typography, Container } from "@mui/material";
+import { List, ListItem, ListItemText, Typography, Container, Box } from "@mui/material";
+import PaginationClient from "@/app/components/PaginationClient";
 interface User {
     _id: string;
     name: string;
     email: string;
   }
-export default async function UserList() {
-    const users = await fetchUsers();
+export default async function UserList({ searchParams }: { searchParams: { page?: string } }) {
+    const page = searchParams.page ? parseInt(searchParams.page) : 1;
+    const data = await fetchUsers(page);
+    const users = data.users;
+    const total = data.total;
+    
     return (
       <>
       <Container maxWidth="sm">
@@ -20,35 +25,21 @@ export default async function UserList() {
           </ListItem>
         ))}
       </List>
+
+      {/* Pagination Component */}
+      <Box display="flex" justifyContent="center" mt={2}>
+      <PaginationClient total={total} />
+      </Box>
     </Container>
       </>
     
   );
   }
 
-  // async function fetchUsers() {
-  //   const configHeaders = {
-  //       headers: {
-  //        // Authorization: `Bearer ${token}`,
-  //         "Content-Type": "application/json",
-  //       }
-  //     };
-  //     try {
-  //       const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/users/get-all`, configHeaders);
-  //       return response.data;
-  //       //setData(response?.data?.data?.users);
-  //       // let totalPageCount = Math.ceil(response?.data?.data?.totalCount / 10);
-  //       // setpageCount(totalPageCount);
-  //       // setError(null);
-  //     } catch (err) {
-  //       console.error("Error fetching users:", err);
-  //       return [];
-  //     }
-  // }
 
-  async function fetchUsers() {
+  async function fetchUsers(page:number) {
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users/get-all`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users/get-all?page=${page}&limit=10`, {
         headers: {
           "Content-Type": "application/json",
         },
@@ -56,7 +47,8 @@ export default async function UserList() {
       });
   
       if (!res.ok) throw new Error("Failed to fetch users");
-      return await res.json();
+      const res2 =  await res.json();
+      return res2;
     } catch (err) {
       console.error("Error fetching users:", err);
       return [];
