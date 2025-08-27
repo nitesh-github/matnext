@@ -8,10 +8,11 @@ import {
   IconButton,
   Toolbar,
   Typography,
+  Button,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import Sidebar from "./Sidebar";
-
+import { signOut } from "next-auth/react";
 const drawerWidth = 240;
 
 export default function DashboardLayout({
@@ -19,16 +20,15 @@ export default function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
 
   const toggleDrawer = () => {
     setOpen(!open);
   };
 
   return (
-    <Box sx={{ display: "flex" }}>
+    <Box>
       <CssBaseline />
-
       {/* Top App Bar */}
       <AppBar position="fixed" sx={{ zIndex: 1201 }}>
         <Toolbar>
@@ -43,8 +43,15 @@ export default function DashboardLayout({
           <Typography variant="h6" noWrap>
             MUI Dashboard
           </Typography>
+          {/* Logout Button */}
+          <Button
+            color="inherit"
+            sx={{ ml: "auto" }}
+            onClick={() => signOut({ callbackUrl: "/login" })}
+          >
+            Logout
+          </Button>
         </Toolbar>
-        
       </AppBar>
 
       {/* Sidebar Drawer */}
@@ -58,7 +65,7 @@ export default function DashboardLayout({
         }}
       >
         <Toolbar />
-        <Sidebar/>
+        <Sidebar />
       </Drawer>
 
       {/* Main Content */}
