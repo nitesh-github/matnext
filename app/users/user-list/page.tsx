@@ -1,20 +1,15 @@
-import { Typography } from "@mui/material";
+import { Typography, CircularProgress } from "@mui/material";
 import UserTable from "./UserTable";
-
-export default async function UserList({
-  searchParams,
-}: {
-  searchParams: { page?: string };
-}) {
-  const searchParam = await searchParams;
-  const page = searchParam.page ? parseInt(searchParam.page) : 1;
-
+import { Suspense } from "react";
+export default async function UserList() {
   return (
     <>
-        <Typography variant="h5" gutterBottom>
-          Material User List
-        </Typography>
-        <UserTable page={page} />
+      <Typography variant="h5" gutterBottom>
+        Material User List
+      </Typography>
+      <Suspense fallback={<CircularProgress />}>
+        <UserTable />
+      </Suspense>
     </>
   );
 }
