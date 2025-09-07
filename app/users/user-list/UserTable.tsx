@@ -47,14 +47,16 @@ export default function UserTable() {
       <Table>
         <TableHead>
           <TableRow>
+            <TableCell>S.No.</TableCell>
             <TableCell>Name</TableCell>
             <TableCell>Email</TableCell>
             <TableCell align="right">Actions</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {data && data?.users.map((user) => (
+          {data && data?.users.map((user, i) => (
             <TableRow key={user._id}>
+              <TableCell>{((page - 1) * 10 ) + i + 1 }</TableCell>
               <TableCell>{user.name}</TableCell>
               <TableCell>{user.email}</TableCell>
               <TableCell align="right">

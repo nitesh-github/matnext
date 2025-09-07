@@ -9,6 +9,7 @@ export default function Sidebar() {
   const menuItems = [
     { text: "Dashboard", icon: <DashboardIcon />, path: "/" },
     { text: "Users", icon: <PeopleIcon />, path: "/users/user-list" },
+    { text: "Customers", icon: <PeopleIcon />, path: "/customers/customer-list" },
     { text: "Products", icon: <ShoppingCartIcon />, path: "/products" },
   ];
 
